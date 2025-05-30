@@ -10,7 +10,7 @@
 <div class="col-sm-12">
 <h3 class="page-title">Student Details</h3>
 <ul class="breadcrumb">
-<li class="breadcrumb-item"><a href="students.html">Student</a></li>
+<li class="breadcrumb-item"><a href="/student">Student</a></li>
 <li class="breadcrumb-item active">Student Details</li>
 </ul>
 </div>
@@ -23,32 +23,32 @@
 <div class="about-info">
 <h4>About Me</h4>
 <div class="media mt-3">
-<img src="assets/img/user.jpg" class="mr-3" alt="...">
+<img src="{{student.student_image.url}}" class="mr-3" alt="...">
 <div class="media-body">
 <ul>
 <li>
 <span class="title-span">Full Name : </span>
-<span class="info-span">Daisy Parks</span>
+<span class="info-span">{{student.first_name}}</span>
 </li>
 <li>
 <span class="title-span">Department : </span>
-<span class="info-span">Computer Science</span>
+<span class="info-span">{{student.section}}</span>
 </li>
 <li>
 <span class="title-span">Mobile : </span>
-<span class="info-span">+91 89657 48512</span>
+<span class="info-span">{{student.mobile_number}}</span>
 </li>
 <li>
 <span class="title-span">Email : </span>
-<span class="info-span"><a href="https://preschool.dreamguystech.com/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="7216131b010b32151f131b1e5c111d1f">[email&#160;protected]</a></span>
+<span class="info-span"><a href="{{student.parent.father_email}}" class="__cf_email__" data-cfemail="7216131b010b32151f131b1e5c111d1f">[email&#160;protected]</a></span>
 </li>
 <li>
 <span class="title-span">Gender : </span>
-<span class="info-span">Male</span>
+<span class="info-span">{{student.gender}}</span>
 </li>
 <li>
 <span class="title-span">DOB : </span>
-<span class="info-span">22 Apr 1995</span>
+<span class="info-span">{{student.date_of_birth}}</span>
 </li>
 </ul>
 </div>
