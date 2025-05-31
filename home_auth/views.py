@@ -1,4 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login, logout
+from django.contrib import messages
+from django.utils.crypto import get_random_string
+
+# Import your User and PasswordResetRequest models
+from .models import User, PasswordResetRequest
 
 # Create your views here.
 def signup_view(request):
@@ -10,7 +16,7 @@ def signup_view(request):
         role = request.POST['role']
         
         
-        user = User.object.create_user(
+        user = User.objects.create_user(
             first_name=first_name,
             last_name=last_name,
             email=email,
@@ -57,8 +63,36 @@ def login_view(request):
 def forgot_password_view(request):
     if request.method == "POST":
         email = request.POST['email']
-        user = User.object.filter(email=email).first()
+        user = User.objects.filter(email=email).first()
         
         if user:
-            token = get_radnom_string(32)
+            token = get_random_string(32)
             reset_request = PasswordResetRequest.objects.create(user=user, email=email, token=token)
+            reset_request.send_reset_email()
+            messages.success(request, "Reset link send to your mail")
+        else:
+            messages.error(request, "Email Not Found")
+    return render(request, 'authentication/forget-password.html')
+
+def reset_password_view(request, token):
+    reset_request = PasswordResetRequest.objects.create(token=token)
+    
+    if not reset_request or not reset_request.is_valid():
+        messages.error(request, 'Invalid or expired reset link')
+        return redirect('index')
+    
+    if request.method == "POST":
+        new_password = request.POST['new_password']
+        reset_request.user.set_password(new_password)
+        reset_request.save()
+        messages.success(request, "Password reset Successfully")
+        return redirect('login')
+    
+    return render(request, 'reset_password.html', {'token: token'})
+        
+
+def logout_view(request):
+    logout(request)  
+    messages.success(request, "You have been logout")
+    return redirect('index')
+         
