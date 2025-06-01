@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.utils.crypto import get_random_string
 
 # Import your User and PasswordResetRequest models
-from .models import User, PasswordResetRequest
+from .models import CustomUser as User, PasswordResetRequest
 
 # Create your views here.
 def signup_view(request):
@@ -13,22 +13,14 @@ def signup_view(request):
         last_name = request.POST['last_name']
         email = request.POST['email']
         password = request.POST['password']
-        role = request.POST['role']
         
         
         user = User.objects.create_user(
-            first_name=first_name,
+            username=first_name,
             last_name=last_name,
             email=email,
             password=password,
-            role=role,
             )
-        if role == 'student':
-            user.is_student = True
-        elif role == 'teacher':
-            user.is_teacher = True
-        elif role == 'admin':
-            user.is_admin = True
             
         user.save()
         login(request, user)
